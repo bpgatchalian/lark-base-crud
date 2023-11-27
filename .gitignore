@@ -1,0 +1,17 @@
+# .gitignore
+
+# Exclude compiled Python files
+__pycache__/
+
+# Exclude JetBrains IDE configuration
+.idea/
+
+# Exclude Visual Studio Code configuration
+.vscode/
+
+# Exclude virtual environment
+mainenv/
+venv/
+
+# Exclude .env file
+.env
