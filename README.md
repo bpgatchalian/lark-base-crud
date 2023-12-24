@@ -1,5 +1,5 @@
 # Lark Base CRUD
-A simple CRUD method for Lark's Base
+A simple CRUD method for Lark Base
 
 ## Description:
 This repository extends the functionality of Lark's innovative sheet-based database, known as "Base," by introducing a set of CRUD (Create, Read, Update, Delete) methods implemented in Python.
