@@ -25,7 +25,7 @@ Estimated Delivery Date | Text
 
 2. Clone this repository.
 ```sh
-git clone https://github.com/kelzla/lark-base-crud.git
+git clone https://github.com/bpgatchalian/lark-base-crud.git
 ```
 
 3. Rename the ".env.template" to ".env"
