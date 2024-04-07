@@ -1,7 +1,6 @@
 import time
 from functools import wraps
 
-
 class Decorator:    
 
     def __init__(self):
@@ -32,16 +31,13 @@ class Decorator:
             return wrapper
         return decorator
 
-
-
-
     def retry_on_none(self,func):
         """
         Decorator to retry function when the result is None.
         """
         def wrapper(*args, **kwargs):
             max_retries = 3
-            delay = 30  # Delay in seconds
+            delay = 10  # Delay in seconds
             
             for _ in range(max_retries):
                 result = func(*args, **kwargs)
