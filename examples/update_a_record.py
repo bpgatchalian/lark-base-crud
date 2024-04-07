@@ -4,7 +4,7 @@ lark_base_api = BaseAPI()
 
 update_a_record_request = {
         "fields": {                
-        "Name": "Bryner",
+        "Name": "Michael Gatchitor",
         "Age": 33,
         "Birthday": "1970/06/01",
         "Address": "Makati, Philippines"}
