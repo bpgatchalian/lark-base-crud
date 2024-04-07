@@ -10,16 +10,13 @@ retry = Decorator()
 
 class Authenticator(APIRequest):
 	def __init__(self):
-		self.refresh_token_path = os.getenv('REFRESH_TOKEN_FILE_PATH')
 		self.app_id = os.getenv('APP_ID')
 		self.app_secret = os.getenv('APP_SECRET')
 		self.tenant_access_token_url = os.getenv('TENANT_ACCESS_TOKEN_URL')
 		self.refresh_access_token_url = os.getenv('REFRESH_ACCESS_TOKEN_URL')
-
-		self.refresh_token_file_path = os.getenv('REFRESH_TOKEN_FILE_PATH')
-		self.access_token_file_path = os.getenv('ACCESS_TOKEN_FILE_PATH')
+		self.token_file_path = os.getenv('TOKEN_FILE_PATH')
 		self.tenant_access_token = self.get_tenant_access_token()
-
+		
 	@retry.retry_on_none
 	def get_tenant_access_token(self):
 		try:
@@ -34,8 +31,11 @@ class Authenticator(APIRequest):
 	@retry.retry_on_none
 	def get_refresh_token(self):
 		try:
-			with open(self.refresh_token_file_path, 'r') as file:
-				refresh_token = file.read().strip()  # Read the content and remove any leading/trailing whitespace
+
+			with open(self.token_file_path, 'r') as file:
+				lines = file.readlines()
+				refresh_token = lines[1].strip()
+			
 			if not refresh_token:
 				raise ValueError("Stored refresh token is blank")
 	
@@ -59,12 +59,9 @@ class Authenticator(APIRequest):
 			if not new_access_token:
 				raise ValueError("Received access token is nothing")
 			
-			#Store the new refresh token in the txt file
-			with open(self.refresh_token_file_path, 'w') as file:
-				file.write(new_refresh_token)
-			#store the new access token in the txt file
-			with open(self.access_token_file_path, 'w') as file:
-				file.write(new_access_token)
+			with open(self.token_file_path, 'w') as file:
+				file.write(new_access_token + '\n')
+				file.write(new_refresh_token + '\n')
 
 			return [new_refresh_token, new_access_token]
 		
