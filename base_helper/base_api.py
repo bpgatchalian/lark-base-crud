@@ -25,11 +25,11 @@ class BaseAPI(APIRequest):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/{record_id}"
-            payload = ''
+            json_payload = ''
             headers = {
                 'Authorization': f'Bearer {refresh_token}'
             }
-            response = requests.request("GET", url, headers=headers, data=payload)
+            response = requests.request("GET", url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
@@ -60,12 +60,12 @@ class BaseAPI(APIRequest):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/"
-            payload = json.dumps(payload)
+            json_payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
             }
-            response = requests.post(url, headers=headers, data=payload)
+            response = requests.post(url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
@@ -75,12 +75,12 @@ class BaseAPI(APIRequest):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/{record_id}"
-            payload = json.dumps(payload)
+            json_payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
             }
-            response = requests.put(url, headers=headers, data=payload)
+            response = requests.put(url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
@@ -90,12 +90,12 @@ class BaseAPI(APIRequest):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/{record_id}"
-            payload = ''
+            json_payload = ''
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
             }
-            response = requests.delete(url, headers=headers, data=payload)
+            response = requests.delete(url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
@@ -105,27 +105,27 @@ class BaseAPI(APIRequest):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/batch_create"
-            payload = json.dumps(payload)
+            json_payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
             }
-            response = requests.post(url, headers=headers, data=payload)
+            response = requests.post(url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
     
     @retry.retry(tries=3, delay=10, backoff=2)
-    def update_records(self, payload, app_token, table_id):
+    def update_records(self, payload: dict):
         try:
             refresh_token = self.stored_refresh_token()
-            url = f"{self.bitable_base_url}/{app_token}/tables/{table_id}/records/batch_update"
-            payload = json.dumps(payload)
+            url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/batch_update"
+            json_payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
             }
-            response = requests.post(url, headers=headers, data=payload)
+            response = requests.post(url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
@@ -135,12 +135,12 @@ class BaseAPI(APIRequest):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/batch_delete"
-            payload = json.dumps(payload)
+            json_payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
             }
-            response = requests.post(url, headers=headers, data=payload)
+            response = requests.post(url, headers=headers, data=json_payload)
             return response
         except Exception as e:
             print(f"Error: {e}")
