@@ -22,7 +22,7 @@ test.py
 test.txt
 main.py
 .env copy.template
-token/
+
 modules/
 setup.py
 demo.py
