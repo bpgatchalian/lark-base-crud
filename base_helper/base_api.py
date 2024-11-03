@@ -14,7 +14,7 @@ retry = Decorator()
 
 class BaseAPI(APIRequest):
 
-    def __init__(self, app_token: str, table_id: str):
+    def __init__(self, app_token: str = None, table_id: str = None):
         self.bitable_base_url = "https://open.larksuite.com/open-apis/bitable/v1/apps"
         self.token_file_path = os.getenv('TOKEN_FILE_PATH')
         self.app_token = app_token
