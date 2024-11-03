@@ -41,7 +41,18 @@ git clone https://github.com/bpgatchalian/lark-base-crud.git
    pip install -r requirements.txt
    ```
 ## Example Usage
+   ### Get access token
+   Get access token and store it in token/tokens.txt
+   ```python
+   from base_helper.base_api import BaseAPI
 
+   lark_base_api = BaseAPI()
+
+   access_token = lark_base_api.get_new_refresh_token()
+
+   print(access_token)
+   ```
+   
    ### List Records
    Get list of records
    ```python
