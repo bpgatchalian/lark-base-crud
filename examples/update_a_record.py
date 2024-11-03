@@ -15,6 +15,6 @@ update_a_record_request = {
         "Address": "Makati, Philippines"}
 }
 
-response = lark_base_api.update_a_record(json_data=update_a_record_request, record_id="recu9eqdaKMped") # change record_id
+response = lark_base_api.update_a_record(payload=update_a_record_request, record_id="recu9eqdaKMped") # change record_id
 
 print(response.text)
