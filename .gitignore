@@ -15,3 +15,14 @@ venv/
 
 # Exclude .env file
 .env
+
+aienv/
+test.ipynb
+test.py
+test.txt
+main.py
+.env copy.template
+
+modules/
+setup.py
+demo.py

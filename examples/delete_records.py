@@ -1,6 +1,11 @@
-from lark.base_api import BaseAPI
+# examples/delete_records.py
 
-lark_base_api = BaseAPI()
+from base_helper.base_api import BaseAPI
+
+app_token = "YOUR_APP_TOKEN"
+table_id = "YOUR_TABLE_ID"
+
+lark_base_api = BaseAPI(app_token, table_id)
 
 delete_records_request = {
     "records": [

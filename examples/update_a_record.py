@@ -1,6 +1,11 @@
-from lark.base_api import BaseAPI
+# examples/update_a_record.py
 
-lark_base_api = BaseAPI()
+from base_helper.base_api import BaseAPI
+
+app_token = "YOUR_APP_TOKEN"
+table_id = "YOUR_TABLE_ID"
+
+lark_base_api = BaseAPI(app_token, table_id)
 
 update_a_record_request = {
         "fields": {                
@@ -10,6 +15,6 @@ update_a_record_request = {
         "Address": "Makati, Philippines"}
 }
 
-response = lark_base_api.update_a_record(json_data=update_a_record_request, record_id="recu9eqdaKMped") # change record_id
+response = lark_base_api.update_a_record(payload=update_a_record_request, record_id="recu9eqdaKMped") # change record_id
 
 print(response.text)

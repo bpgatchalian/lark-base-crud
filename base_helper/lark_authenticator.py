@@ -1,19 +1,21 @@
+# base_helper/lark_authenticator.py
+
 import requests
 import json
 import os
 from .api_request import APIRequest
-from utilities.retry_decorator  import Decorator
+from utils.retry_decorator  import Decorator
 from dotenv import load_dotenv,find_dotenv
-load_dotenv(find_dotenv())
+load_dotenv(find_dotenv(), override=True)
 
 retry = Decorator()
 
 class Authenticator(APIRequest):
 	def __init__(self):
+		self.tenant_access_token_url = "https://open.larksuite.com/open-apis/auth/v3/tenant_access_token/internal"
+		self.refresh_access_token_url = "https://open.larksuite.com/open-apis/authen/v1/oidc/refresh_access_token"		
 		self.app_id = os.getenv('APP_ID')
 		self.app_secret = os.getenv('APP_SECRET')
-		self.tenant_access_token_url = os.getenv('TENANT_ACCESS_TOKEN_URL')
-		self.refresh_access_token_url = os.getenv('REFRESH_ACCESS_TOKEN_URL')
 		self.token_file_path = os.getenv('TOKEN_FILE_PATH')
 		self.tenant_access_token = self.get_tenant_access_token()
 		
