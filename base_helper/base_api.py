@@ -1,9 +1,11 @@
+# base_helper/base_api.py
+
 import requests
 import json
 import os
 from .api_request import APIRequest
 from .lark_authenticator import Authenticator
-from utilities.retry_decorator import Decorator
+from utils.retry_decorator import Decorator
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -12,14 +14,14 @@ retry = Decorator()
 
 class BaseAPI(APIRequest):
 
-    def __init__(self):
-        self.bitable_base_url = os.getenv("BITABLE_BASE_URL")
-        self.app_token = os.getenv("APP_TOKEN")
-        self.table_id = os.getenv("TABLE_ID")
+    def __init__(self, app_token: str, table_id: str):
+        self.bitable_base_url = "https://open.larksuite.com/open-apis/bitable/v1/apps"
         self.token_file_path = os.getenv('TOKEN_FILE_PATH')
+        self.app_token = app_token
+        self.table_id = table_id     
 
     @retry.retry(tries=3, delay=10, backoff=2)
-    def get_records(self, record_id):
+    def get_records(self, record_id: str):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/{record_id}"
@@ -33,25 +35,32 @@ class BaseAPI(APIRequest):
             print(f"Error: {e}")
 
     @retry.retry(tries=3, delay=10, backoff=2)
-    def list_records(self):
+    def list_records(self, field_names: str = "", filter_param:str = "", sort:str = "", page_token:str = "", page_size:int = 20):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records"
-            payload = ''
+            params = {
+                "field_names": field_names,
+                "filter": filter_param,
+                "sort": sort,
+                "page_token": page_token,
+                "page_size": page_size
+            }            
+
             headers = {
                 'Authorization': f'Bearer {refresh_token}'
             }
-            response = requests.request("GET", url, headers=headers, data=payload)
+            response = requests.request("GET", url, headers=headers, params=params)
             return response
         except Exception as e:
-            print(f"Error: {e}")
-            
+            print(f"Error list_records: {e}")
+                    
     @retry.retry(tries=3, delay=10, backoff=2)
-    def create_a_record(self, json_data):
+    def create_a_record(self, payload: dict):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/"
-            payload = json.dumps(json_data)
+            payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
@@ -62,11 +71,11 @@ class BaseAPI(APIRequest):
             print(f"Error: {e}")
 
     @retry.retry(tries=3, delay=10, backoff=2)
-    def update_a_record(self, record_id, json_data):
+    def update_a_record(self, record_id: str, payload: dict):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/{record_id}"
-            payload = json.dumps(json_data)
+            payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
@@ -77,7 +86,7 @@ class BaseAPI(APIRequest):
             print(f"Error: {e}")
 
     @retry.retry(tries=3, delay=10, backoff=2)
-    def delete_a_record(self, record_id,):
+    def delete_a_record(self, record_id: str):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/{record_id}"
@@ -92,11 +101,11 @@ class BaseAPI(APIRequest):
             print(f"Error: {e}")
 
     @retry.retry(tries=3, delay=10, backoff=2)
-    def create_records(self, json_data):
+    def create_records(self, payload: dict):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/batch_create"
-            payload = json.dumps(json_data)
+            payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
@@ -107,11 +116,11 @@ class BaseAPI(APIRequest):
             print(f"Error: {e}")
     
     @retry.retry(tries=3, delay=10, backoff=2)
-    def update_records(self, json_data):
+    def update_records(self, payload, app_token, table_id):
         try:
             refresh_token = self.stored_refresh_token()
-            url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/batch_update"
-            payload = json.dumps(json_data)
+            url = f"{self.bitable_base_url}/{app_token}/tables/{table_id}/records/batch_update"
+            payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
@@ -122,11 +131,11 @@ class BaseAPI(APIRequest):
             print(f"Error: {e}")
 
     @retry.retry(tries=3, delay=10, backoff=2)
-    def delete_records(self, json_data):
+    def delete_records(self, payload: dict):
         try:
             refresh_token = self.stored_refresh_token()
             url = f"{self.bitable_base_url}/{self.app_token}/tables/{self.table_id}/records/batch_delete"
-            payload = json.dumps(json_data)
+            payload = json.dumps(payload)
             headers = {
                 'Authorization': f'Bearer {refresh_token}',
                 'Content-Type': 'application/json'
